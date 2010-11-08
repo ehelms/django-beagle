@@ -7,6 +7,11 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_DOC_ROOT = BASE_DIR + '/djbeagle/media'
 DJBEAGLE_MEDIA_PREFIX = '/site_media'
 
+from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
+TEMPLATE_CONTEXT_PROCESSORS += (
+    'djbeagle.context_processors.context_processor',
+)
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
