@@ -4,6 +4,9 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
+STATIC_DOC_ROOT = BASE_DIR + '/djbeagle/media'
+DJBEAGLE_MEDIA_PREFIX = '/site_media'
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
