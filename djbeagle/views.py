@@ -7,4 +7,5 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 
 def home(request):
-    return HttpResponse("success")
+    return render_to_response("djbeagle/base.html",
+                context_instance=RequestContext(request))

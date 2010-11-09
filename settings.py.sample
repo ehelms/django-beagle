@@ -1,17 +1,70 @@
 # Django settings for django_beagle project.
 import sys
 import os
+from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-STATIC_DOC_ROOT = BASE_DIR + '/djbeagle/media'
-DJBEAGLE_MEDIA_PREFIX = '/site_media'
+######### DJANGO_OPENID_OPUS #################
+DJANGO_OPENID_OPUS_MEDIA_PREFIX = "/django_openid_opus/site_media/"
 
-from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
-TEMPLATE_CONTEXT_PROCESSORS += (
-    'djbeagle.context_processors.context_processor',
+TEMPLATE_CONTEXT_PROCESSORS += ( 
+    'django_openid_opus.context_processors.context_processor',
 )
 
+AUTHENTICATION_BACKENDS = (
+    'django_openid_opus.backend.OpenIDBackend',
+)
+
+
+LOGIN_URL = "/django_openid_opus/login/"
+
+######### DJBEAGLE ###########################
+DJBEAGLE_MEDIA_PREFIX = '/djbeagle/site_media/'
+
+TEMPLATE_CONTEXT_PROCESSORS += (
+    'djbeagle.context_processors.context_processor',
+    'django.core.context_processors.request',
+)
+
+
+######## Common Settings - Modified ##########
+# Make this unique, and don't share it with anybody.
+SECRET_KEY = ''
+
+ROOT_URLCONF = 'urls'
+
+TEMPLATE_DIRS = (
+    BASE_DIR + '/templates',
+    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
+    # Always use forward slashes, even on Windows.
+    # Don't forget to use absolute paths, not relative paths.
+)
+
+DATABASES = {
+    'default': {
+        'ENGINE': '', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': '',                      # Or path to database file if using sqlite3.
+        'USER': '',                      # Not used with sqlite3.
+        'PASSWORD': '',                  # Not used with sqlite3.
+        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+    }
+}
+
+INSTALLED_APPS = (
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.sites',
+    'django.contrib.messages',
+    'django.contrib.admin',
+    'south',
+    'djbeagle',
+    'django_openid_opus',
+)
+
+######## Common Settings - Unmodified ##########
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -21,16 +74,6 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '',                      # Or path to database file if using sqlite3.
-        'USER': '',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
-    }
-}
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -69,9 +112,6 @@ MEDIA_URL = ''
 # Examples: "http://foo.com/media/", "/media/".
 ADMIN_MEDIA_PREFIX = '/media/'
 
-# Make this unique, and don't share it with anybody.
-SECRET_KEY = '0ye!a@xik9s=42!w2p6@)xxe%4_pkys8^)@v+yq6e*0%soj=#a'
-
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
@@ -87,24 +127,3 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
-ROOT_URLCONF = 'urls'
-
-TEMPLATE_DIRS = (
-    BASE_DIR + '/templates',
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-)
-
-INSTALLED_APPS = (
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.sites',
-    'django.contrib.messages',
-    'django.contrib.admin',
-    'south',
-    'djbeagle',
-    # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
-)

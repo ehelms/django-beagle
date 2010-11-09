@@ -1,0 +1,4 @@
+gdata
+BeautifulSoup==3.0.8.1
+python-openid
+south

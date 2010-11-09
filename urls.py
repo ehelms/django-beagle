@@ -14,4 +14,5 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     (r'^admin/', include(admin.site.urls)),
     (r'^djbeagle/', include('djbeagle.urls')),
+    (r'^django_openid_opus/', include('django_openid_opus.urls')),
 )
