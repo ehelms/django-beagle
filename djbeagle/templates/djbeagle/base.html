@@ -1,8 +1,26 @@
 <!DOCTYPE html>
 <html lang="en-us">
 	<head>
-	    <link href="{{ DJBEAGLE_MEDIA_PREFIX }}style.css" rel="stylesheet" type="text/css" />
-	</head>
-	<body>
+		<link href="{{ DJBEAGLE_MEDIA_PREFIX }}style.css" rel="stylesheet" type="text/css" />
+		{% block extracss %}{% endblock extracss %}
+
+		<script type="text/javascript" src="{{ DJBEAGLE_MEDIA_PREFIX }}jquery.js"></script>
+		{% block extrajs %}{% endblock extrajs %}
+
+        <title>{% block title %}DJBeagle{% endblock title %}</title>
+        {% block head %}{% endblock head %}
+		    
+    </head>
+
+    <body>
+        {% autoescape on %}
+        {% block body %}
+        {% endblock body %}
+        <div id="content">
+        {% block content %}
+        {% endblock content %}
+        </div>
+    
+        {% endautoescape %}
 	</body>
 </html>
