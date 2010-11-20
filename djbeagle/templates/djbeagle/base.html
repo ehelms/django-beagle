@@ -2,6 +2,7 @@
 <html lang="en-us">
 	<head>
 		<link href="{{ DJBEAGLE_MEDIA_PREFIX }}style.css" rel="stylesheet" type="text/css" />
+		<link href="{{ DJBEAGLE_MEDIA_PREFIX }}fluid_grid.css" rel="stylesheet" type="text/css" />
 		{% block extracss %}{% endblock extracss %}
 
 		<script type="text/javascript" src="{{ DJBEAGLE_MEDIA_PREFIX }}jquery.js"></script>
@@ -16,7 +17,9 @@
         {% autoescape on %}
         {% block body %}
         {% endblock body %}
-        <div id="content">
+        <div class="container_12">
+            <div id="navigation" class="grid_12">
+            </div>
         {% block content %}
         {% endblock content %}
         </div>
