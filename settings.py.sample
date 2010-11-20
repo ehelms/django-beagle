@@ -18,6 +18,7 @@ AUTHENTICATION_BACKENDS = (
 
 
 LOGIN_URL = "/django_openid_opus/login/"
+LOGIN_REDIRECT_URL = "/djbeagle/"
 
 ######### DJBEAGLE ###########################
 DJBEAGLE_MEDIA_PREFIX = '/djbeagle/site_media/'
