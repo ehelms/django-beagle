@@ -28,6 +28,12 @@ TEMPLATE_CONTEXT_PROCESSORS += (
     'django.core.context_processors.request',
 )
 
+SEARCH_ENGINES = (
+    #'djbeagle.lib.engines.google_scholar.GoogleScholar',
+    #'djbeagle.lib.engines.acm_portal.ACMPortal',
+    #'djbeagle.lib.engines.citeseerx.CiteSeerX',
+    #'djbeagle.lib.engines.ieeexplore.IEEEXplore',
+)
 
 ######## Common Settings - Modified ##########
 # Make this unique, and don't share it with anybody.

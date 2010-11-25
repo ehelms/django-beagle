@@ -3,21 +3,18 @@
     <div class="grid_8 searchBox push_4">
         <p>
         Please enter search criteria and choose which search engines you would like to use.
-	</p>
+        </p>
+        <form action="{% url djbeagle.views.search %}" method="POST">
+            {% csrf_token %}
         <div class="grid_8">
-            <input class="grid_3" type="text" name="criteria" /><button name="Search">Search</button>
+            <input class="grid_3" type="text" name="criteria" />
+            <input type="submit" id="searchButton" value="Submit">
         </div>
-        <div class="grid_8">
-            <input type="checkbox" name="google_scholar" ><label>Google Scholar</label></input>
-        </div>
-        <div class="grid_8">
-            <input type="checkbox" name="acmportal" ><label>ACM Portal</label></input>
-        </div>
-        <div class="grid_8">
-            <input type="checkbox" name="citeseerx" ><label>CiteSeerX</label></input>
-        </div>
-        <div class="grid_8">
-            <input type="checkbox" name="ieeexplore" ><label>IEEEXplore</label></input>
-        </div>
+        {% for title in engine_list %}
+            <div class="grid_8">
+                <input type="checkbox" name="engine" value="{{ title }}" ><label>{{ title }}</label></input>
+            </div>
+            {% endfor %}
+        </form>
     </div>
 {% endblock content %}

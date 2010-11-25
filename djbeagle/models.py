@@ -6,7 +6,6 @@ class Search(models.Model):
     criteria = models.CharField(max_length=128)
     date = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User)
-    #databases = models.
     article = models.ManyToManyField("Article", blank=True)
 
 class Article(models.Model):

@@ -1,3 +1,22 @@
+body {
+    margin: 0;
+}
+
+ul,li,a, a:visited {
+    list-style: none;
+    text-decoration: none;
+    color: black;
+}
 .searchBox {
     top: 200px;
+}
+
+#navigation {
+    background: #65E080;
+    border-radius: 0 0 5px 5px;
+    border: 1px solid #38E05D;
+}
+
+.username {
+    text-align: right;
 }

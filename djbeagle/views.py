@@ -9,20 +9,29 @@ from django.contrib.auth.decorators import login_required
 
 from djbeagle.forms import SearchForm
 from djbeagle.models import Search
+from djbeagle.lib.engines import util
+from djbeagle.lib.search import run
 
 @login_required
 def home(request):
     search_form = SearchForm()
+    engine_list = util.get_engine_titles()
     return render_to_response("djbeagle/home.html",
-                { "search_form" : search_form, },
+                { "search_form" : search_form,
+                 'engine_list' : engine_list, },
                 context_instance=RequestContext(request))
 
 
 @login_required
 def search(request):
-    if request.METHOD == "POST":
-        search = Search(user=request.username)
-        search_form = SearchForm(instance=search)
+    if request.method == "POST":
+        search = Search(user=request.user)
+        search_form = SearchForm(request.POST, instance=search)
         if search_form.is_valid():
             search_form.save()
-            return HttpResponse("success")
+            results = run([request.POST['engine']], request.POST['criteria'])
+            return render_to_response("djbeagle/results.html",
+                            { 'article_list' : results },
+                            context_instance=RequestContext(request))
+        else:
+            return HttpResponse("fail")
