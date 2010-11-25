@@ -12,9 +12,7 @@ ul,li,a, a:visited {
 }
 
 #navigation {
-    background: #65E080;
-    border-radius: 0 0 5px 5px;
-    border: 1px solid #38E05D;
+    border-bottom: 1px solid #04859D;
 }
 
 .username {

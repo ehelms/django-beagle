@@ -1,12 +1,17 @@
 {% extends "djbeagle/base.html" %}
 {% block content %}
-    <div class="grid_8 push_4">
-        {% for article in article_list %}
-            <table class="grid_8" border="1">
+    <div class="grid_8 push_4" style="margin: 100px 0 0 0;">
+        <table class="grid_8">
+            <thead>
+                <th>Article Title</th>
+            </thead>
+            <tbody>
+            {% for article in article_list %}
                 <tr>
                     <td>{{ article }}</td>
                 </tr>
-            </table>
-        {% endfor %}
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 {% endblock content %}
