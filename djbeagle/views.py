@@ -8,9 +8,10 @@ from django.db import IntegrityError
 from django.contrib.auth.decorators import login_required
 
 from djbeagle.forms import SearchForm
-from djbeagle.models import Search
+from djbeagle.models import Search, Article
 from djbeagle.lib.engines import util
 from djbeagle.lib.search import run
+from djbeagle.lib import document
 
 @login_required
 def home(request):
@@ -28,8 +29,10 @@ def search(request):
         search = Search(user=request.user)
         search_form = SearchForm(request.POST, instance=search)
         if search_form.is_valid():
-            search_form.save()
+            saved_search = search_form.save()
             results = run([request.POST['engine']], request.POST['criteria'])
+            for result in results:
+                saved_search.article.get_or_create(title=result)   
             return render_to_response("djbeagle/results.html",
                             { 'article_list' : results },
                             context_instance=RequestContext(request))
