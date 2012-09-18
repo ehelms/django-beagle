@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Django settings for openshift project.
-import imp, os
+import imp, os, sys
 
 # a setting to determine whether we are running on OpenShift
 ON_OPENSHIFT = False
@@ -8,6 +8,8 @@ if os.environ.has_key('OPENSHIFT_REPO_DIR'):
     ON_OPENSHIFT = True
 
 PROJECT_DIR = os.path.dirname(os.path.realpath(__file__))
+
+sys.path.append(os.path.join(PROJECT_DIR))
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -110,9 +112,9 @@ default_keys = { 'SECRET_KEY': 'vm4rl5*ymb@2&d_(gc$gb-^twq9w(u69hi--%$5xrh!xk(t%
 # Replace default keys with dynamic values if we are in OpenShift
 use_keys = default_keys
 if ON_OPENSHIFT:
-    imp.find_module('project.openshiftlibs')
-    import project.openshiftlibs
-    use_keys = project.openshiftlibs.openshift_secure(default_keys)
+    imp.find_module('openshiftlibs')
+    import openshiftlibs
+    use_keys = openshiftlibs.openshift_secure(default_keys)
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = use_keys['SECRET_KEY']
@@ -132,7 +134,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
-ROOT_URLCONF = 'project.urls'
+ROOT_URLCONF = 'urls'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
