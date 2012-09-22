@@ -1,20 +1,21 @@
 {% extends "djbeagle/base.html" %}
 {% block content %}
-    <div class="grid_8 searchBox push_4">
-        <p>
+  <div class="row-fluid">
+    <div class="span8 offset3">
+      <form action="{% url djbeagle.views.search %}" method="POST">
+        <legend>
         Please enter search criteria and choose which search engines you would like to use.
-        </p>
-        <form action="{% url djbeagle.views.search %}" method="POST">
-            {% csrf_token %}
-        <div class="grid_8">
-            <input class="grid_3" type="text" name="criteria" />
-            <input type="submit" id="searchButton" value="Submit">
-        </div>
+        </legend>
+        {% csrf_token %}
+        <label>Enter Search Criteria</label>
+        <input type="text" name="criteria"/>
         {% for title in engine_list %}
-            <div class="grid_8">
-                <input type="checkbox" name="engine" value="{{ title }}" ><label>{{ title }}</label></input>
-            </div>
-            {% endfor %}
-        </form>
+          <label class="checkbox">
+            <input type="checkbox" name="engine" value="{{ title }}" >{{ title }}
+          </label>
+        {% endfor %}
+        <input type="submit" id="searchButton" value="Submit" class="btn btn-primary">
+      </form>
     </div>
+  </div>
 {% endblock content %}

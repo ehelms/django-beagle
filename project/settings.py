@@ -89,6 +89,7 @@ STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
+    #PROJECT_DIR + '/../apps/djbeagle/static'
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -179,8 +180,8 @@ LOGGING = {
 
 
 SEARCH_ENGINES = (
-    #'djbeagle.lib.engines.google_scholar.GoogleScholar',
-    #'djbeagle.lib.engines.acm_portal.ACMPortal',
-    #'djbeagle.lib.engines.citeseerx.CiteSeerX',
-    #'djbeagle.lib.engines.ieeexplore.IEEEXplore',
+    'djbeagle.lib.engines.google_scholar.GoogleScholar',
+    'djbeagle.lib.engines.acm_portal.ACMPortal',
+    'djbeagle.lib.engines.citeseerx.CiteSeerX',
+    'djbeagle.lib.engines.ieeexplore.IEEEXplore',
 )
