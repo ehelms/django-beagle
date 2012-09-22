@@ -1,21 +1,19 @@
 {% extends "djbeagle/base.html" %}
 {% block content %}
-  <div class="row-fluid">
-    <div class="span8 offset3">
-      <form action="{% url djbeagle.views.search %}" method="POST">
-        <legend>
-        Please enter search criteria and choose which search engines you would like to use.
-        </legend>
-        {% csrf_token %}
-        <label>Enter Search Criteria</label>
-        <input type="text" name="criteria"/>
-        {% for title in engine_list %}
-          <label class="checkbox">
-            <input type="checkbox" name="engine" value="{{ title }}" >{{ title }}
-          </label>
-        {% endfor %}
-        <input type="submit" id="searchButton" value="Submit" class="btn btn-primary">
-      </form>
-    </div>
+  <div class="container">
+    <form action="{% url djbeagle.views.search %}" method="POST">
+      <legend>
+      Please enter search criteria and choose which search engines you would like to use.
+      </legend>
+      {% csrf_token %}
+      <label>Enter Search Criteria</label>
+      <input type="text" name="criteria"/>
+      {% for title in engine_list %}
+        <label class="checkbox">
+          <input type="checkbox" name="engine" value="{{ title }}" >{{ title }}
+        </label>
+      {% endfor %}
+      <input type="submit" id="searchButton" value="Submit" class="btn btn-primary">
+    </form>
   </div>
 {% endblock content %}

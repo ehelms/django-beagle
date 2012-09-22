@@ -17,24 +17,25 @@
     </head>
 
     <body>
-        {% autoescape on %}
-        {% block body %}
-        {% endblock body %}
-        <div class="container-fluid">
-            <div class="navbar navbar-inverse navbar-static-top">
-              <div class="navbar-inner">
-                <a class="brand" href="#">DJBeagle</a>
-                <ul class="nav">
-                  {% if user.username %}
-                  <li><a href="">{{ user.username }}</a></li>
-                  {% else %}
-                  <li><a href="#">Login</a></li>
-                  {% endif %}
-                </ul>
-            </div>
-          {% block content %}
-          {% endblock content %}
+      {% autoescape on %}
+      {% block body %}
+      {% endblock body %}
+      <div class="container-fluid">
+        <div class="navbar navbar-inverse navbar-static-top">
+          <div class="navbar-inner">
+            <a class="brand" href="#">DJBeagle</a>
+            <ul class="nav">
+              {% if user.username %}
+              <li><a href="">{{ user.username }}</a></li>
+              {% else %}
+              <li><a href="#">Login</a></li>
+              {% endif %}
+            </ul>
+          </div>
         </div>
-        {% endautoescape %}
+      </div>
+      {% block content %}
+      {% endblock content %}
+      {% endautoescape %}
 	</body>
 </html>
