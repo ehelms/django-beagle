@@ -10,6 +10,7 @@ if os.environ.has_key('OPENSHIFT_REPO_DIR'):
 PROJECT_DIR = os.path.dirname(os.path.realpath(__file__))
 
 sys.path.append(os.path.join(PROJECT_DIR))
+sys.path.append(os.path.join(PROJECT_DIR + '/../apps'))
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -147,7 +148,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
-    'south'
+    'south',
+    'djbeagle'
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )

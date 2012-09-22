@@ -11,7 +11,7 @@ from djbeagle.forms import SearchForm
 from djbeagle.models import Search, Article
 from djbeagle.lib.engines import util
 from djbeagle.lib.search import run
-from djbeagle.lib import document
+#from djbeagle.lib import document
 
 @login_required
 def home(request):

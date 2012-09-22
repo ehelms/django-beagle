@@ -24,7 +24,6 @@
                     <li class="grid_1">DJBeagle</li>
                     {% if user.username %}
                     <li class="grid_2 push_8 username" >{{ user.username }}</li>
-                    <li class="grid_1 push_8"><a href="{% url django_openid_opus.views.logout_view %}">Logout</a></li>
                     {% else %}
                     <li class="grid_1 push_10">Login</li>
                     {% endif %}
