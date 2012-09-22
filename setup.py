@@ -9,5 +9,5 @@ setup(
     author='Eric D. Helms',
     author_email='ericdhelms@gmail.com',
     url='http://www.python.org/sigs/distutils-sig/',
-    install_requires=['Django>=1.4', 'gdata', 'BeautifulSoup', 'python-openid', 'south'],
+    install_requires=['Django>=1.4', 'gdata', 'BeautifulSoup', 'python-openid', 'south', 'psycopg2'],
 )
