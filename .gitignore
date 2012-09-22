@@ -1,3 +1,4 @@
 djbeagle-env
 *.pyc
 *.db
+*.sw*

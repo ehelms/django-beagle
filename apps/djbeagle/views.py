@@ -32,7 +32,7 @@ def search(request):
             saved_search = search_form.save()
             results = run([request.POST['engine']], request.POST['criteria'])
             for result in results:
-                saved_search.article.get_or_create(title=result)   
+                saved_search.article.get_or_create(title=result['title'])
             return render_to_response("djbeagle/results.html",
                             { 'article_list' : results },
                             context_instance=RequestContext(request))

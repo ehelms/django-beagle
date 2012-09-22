@@ -39,17 +39,19 @@ class GoogleScholar:
                         
             # Screen-scrape the result to obtain the publication information
             soup = BeautifulSoup(html)
-            
-            attrs = soup.findAll("div", { "class" : "gs_rt"})
+        
+            attrs = soup.findAll("h3", { "class" : "gs_rt"})
             for attr in attrs:
                 temp = BeautifulSoup(str(attr))
                 title = ""
                 
+                href = temp.a.get('href')
+
                 for item in temp.a.contents:
                     item = str(item).replace("<b>", "")
                     item = str(item).replace("</b>", "")
                     title = title + str(item)
-                titles.append(title)
+                titles.append({'title' : title, 'href' : href})
 
         except urllib2.HTTPError:
             print "ERROR: ",
