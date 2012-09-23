@@ -9,9 +9,10 @@ from django.contrib.auth.decorators import login_required
 from django.utils import simplejson as json
 
 from djbeagle.forms import SearchForm
-from djbeagle.models import Search, Article, Engine, Criterion
+from djbeagle.models import Search, Article, Engine, Criterion, CombinedSearch, CombinedArticle
 from djbeagle.lib.engines import util
 from djbeagle.lib.search import run
+#from djbeagle.lib import combine
 #from djbeagle.lib import document
 
 @login_required
@@ -34,16 +35,18 @@ def search(request, search_id=None):
 
             for criterion in request.POST.getlist('criterion'):
                 saved_search.criteria.add(Criterion.objects.get_or_create(search_string=criterion)[0])
-            for engine in request.POST.getlist('engine'):
-                engine_obj = Engine.objects.get_or_create(name=engine)[0]
-                saved_search.engines.add(engine_obj)
-                results = run(engine, request.POST['criterion'])
 
-                for result in results:
-                    article = Article.objects.get_or_create(title=result['title'], year=result['year'], 
-                                                        link=result['link'], authors=result['authors'],
-                                                        engine=engine_obj)[0]
-                    saved_search.articles.add(article)
+                for engine in request.POST.getlist('engine'):
+                    engine_obj = Engine.objects.get_or_create(name=engine)[0]
+                    saved_search.engines.add(engine_obj)
+                    results = run(engine, criterion)
+
+                    for result in results:
+                        article = Article.objects.get_or_create(title=result['title'], year=result['year'], 
+                                                            link=result['link'], authors=result['authors'],
+                                                            engine=engine_obj)[0]
+                        article.criteria.add(Criterion.objects.get_or_create(search_string=criterion)[0])
+                        saved_search.articles.add(article)
 
             return redirect('search_url', search_id=saved_search.id)
         else:
@@ -73,3 +76,28 @@ def search(request, search_id=None):
             response = { 'status' : 'error' }
 
         return HttpResponse(json.dumps(response), mimetype="application/json")
+
+def combined_search(request, search_id):
+    if request.method == 'POST':
+        search = Search.objects.get(pk=search_id)
+        combined = CombinedSearch()
+        combined.save()
+        search.combined = combined
+        search.save()
+
+        articles = {}
+
+        for article in search.articles.all():
+            if article.title in articles:
+                articles[article.title]['references'].append(article)
+            else:
+                articles[article.title] = { 'title' : article.title, 'references' : [article] }
+
+        for key,value in articles.iteritems():
+            combined_article = CombinedArticle(title=value['title'], search=combined)
+            combined_article.save()
+        
+            for reference in value['references']:
+                combined_article.references.add(reference)
+
+        return redirect('search_url', search_id=search.id)

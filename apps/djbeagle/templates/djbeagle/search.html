@@ -1,4 +1,9 @@
 {% extends "djbeagle/base.html" %}
+
+{% block extrajs %}
+	<script type="text/javascript" src="{{ STATIC_URL }}search.js"></script>
+{% endblock extrajs %}
+
 {% block content %}
   <div class="container">
     <header>
@@ -12,53 +17,75 @@
       <div class="row-fluid">
         <div class="span6">
           <h5 class="span12">Search Criteria</h5>
-          <ul class="span12 offset1">
-            {% for criteria in search.criteria.all %}
-              <li>{{ criteria.search_string }}</li>
-            {% endfor %}
-          </ul>
         </div>
+        {% if not search.combined %}
         <div class="span6">
-          <h5 class="span12">Search Engines Used</h5>
-          <ul class="span12 offset1">
-            {% for engine in search.engines.all %}
-              <li>{{ engine.name }}</li>
-            {% endfor %}
-          </ul>
+          <a id="combine" data-id="{{ search.id }}" href="#" class="offset8 btn-primary btn">Combine Results</a>
         </div>
+        {% endif %}
       </div>
     </header>
-    <div class="accordion" id="engines">
-      {% for engine in search.engines.all %}
-      <div class="accordion-group">
-        <div class="accordion-heading">
-          <a class="accordion-toggle" data-toggle="collapse" data-parent="#engines" href="#collapse-{{ engine.id }}">{{ engine.name }}</a>
-        </div>
-        <div class="accordion-body collapse" id="collapse-{{ engine.id }}">
-          <div class="accordion-inner">
-            <table class="table">
-                <thead>
-                    <th>Year</th>
-                    <th>Title</th>
-                    <th>Authors</th>
-                    <th>Search Engine</th>
-                    <th>Link</th>
-                </thead>
-                <tbody>
-                {% for article in search.articles.all %}
-                  {% if article.engine.name == engine.name %}
-                  <tr>
-                    <td>{{ article.title }}</td>
-                    <td>{{ article.year }}</td>
-                    <td>{{ article.authors }}</td>
-                    <td class="span2">{{ article.engine.name }}</td>
-                    <td class="span2"><a href="{{ article.link }}">Go To Article</a></td>
-                  </tr>
-                  {% endif %}
-                {% endfor %}
-                </tbody>
-            </table>
+    <ul class="nav nav-tabs">
+      {% if search.combined %}
+        <li class="active"><a href="#combined_tab_pane" data-toggle="tab">Combined Results</a></li>
+      {% endif %}
+      {% for criterion in search.criteria.all %}
+      <li {% if forloop.first and not search.combined %}class="active"{% endif %}><a href="#criterion_{{ criterion.id }}" data-toggle="tab">{{ criterion.search_string }}</a></li>
+      {% endfor %}
+    </ul>
+    <div class="tab-content">
+      {% if search.combined %}
+      <div class="tab-pane active" id="combined_tab_pane" >
+        <table class="table">
+            <thead>
+                <th>Title</th>
+            </thead>
+            <tbody>
+            {% for article in search.combined.combined_article.all %}
+              <tr>
+                <td>{{ article.title }}</td>
+              </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+      </div>
+      {% endif %}
+      {% for criterion in search.criteria.all %}
+      <div class="tab-pane {% if forloop.first and not search.combined %}active{% endif %}" id="criterion_{{ criterion.id }}" >
+        <div class="accordion" id="engines-{{ criterion.id }}">
+          {% for engine in search.engines.all %}
+          <div class="accordion-group">
+            <div class="accordion-heading">
+              <a class="accordion-toggle" data-toggle="collapse" data-parent="#engines-{{ criterion.id }}" href="#collapse-{{ criterion.id }}-{{ engine.id }}">{{ engine.name }}</a>
+            </div>
+            <div class="accordion-body collapse" id="collapse-{{ criterion.id }}-{{ engine.id }}">
+              <div class="accordion-inner">
+                <table class="table">
+                    <thead>
+                        <th>Year</th>
+                        <th>Title</th>
+                        <th>Authors</th>
+                        <th>Search Engine</th>
+                        <th>Link</th>
+                    </thead>
+                    <tbody>
+                    {% for article in search.articles.all %}
+                      {% if article.engine.name == engine.name and criterion in article.criteria.all %}
+                      <tr>
+                        <td>{{ article.title }}</td>
+                        <td>{{ article.year }}</td>
+                        <td>{{ article.authors }}</td>
+                        <td class="span2">{{ article.engine.name }}</td>
+                        <td class="span2"><a href="{{ article.link }}">Go To Article</a></td>
+                      </tr>
+                      {% endif %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+              </div>
+            </div>
           </div>
+          {% endfor %}
         </div>
       </div>
       {% endfor %}

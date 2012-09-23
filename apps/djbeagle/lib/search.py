@@ -1,7 +1,7 @@
 from djbeagle.lib.engines import util
 
 
-def run(engine, criteria, num_results=10):
+def run(engine, criteria, num_results=20):
     availible_engines = util.get_availible_engines()
     results = []
     instance = availible_engines[engine]()

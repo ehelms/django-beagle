@@ -34,4 +34,27 @@ $(function(){
             console.log('error');
         });
     });
+
+    $('#combine').on('click', function(){
+        var id = $(this).data('id');
+
+        $.ajax({ 
+            url     : '/search/' + id + '/combined/',
+            type    : 'POST',
+            dataType: 'json'
+        }).success(function(data){
+            console.log(data);
+        }).error(function(){
+            console.log('error');
+        });
+    });
+
+    $(document).on('click', '#add_criterion', function(){
+        var $elem = $('<div class="controls"><input type="text" name="criterion"/>' +
+          '</div>')
+        .insertAfter($(this).parent());
+        
+        $(this).remove();
+        $(this).insertAfter($elem.find('input'));
+    });
 });

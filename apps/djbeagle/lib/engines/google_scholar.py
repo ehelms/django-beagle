@@ -19,6 +19,7 @@ class GoogleScholar:
     
     
     def _get_response(self, terms, start):
+        start = start - 20
         params = urllib.urlencode({'q': "+".join(terms), 'start': start, 
                                     'hl' : 'en',
                                     'btnG' : 'Search', 'as_sdt' : '40000000000',

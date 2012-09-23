@@ -16,7 +16,7 @@ class ACMPortal:
         if count < 10:
             resp = self._get_response(terms, count)
         else: 
-            resp = self._get_response(terms, count + 10)
+            resp = self._get_response(terms, count - 20)
         titles = self._scrape(resp)
         return titles
 
@@ -45,7 +45,7 @@ class ACMPortal:
         
                 rows = BeautifulSoup(str(entry)).findAll("tr")
 
-                title = BeautifulSoup(str(rows[0].contents[1])).findAll('a', { 'class' : 'medium-text' })[0].contents[0]
+                title = re.sub("<[^>]+>", '', str(BeautifulSoup(str(rows[0].contents[1])).findAll('a', { 'class' : 'medium-text' })[0])).strip()
                 link = 'http://dl.acm.org/' + BeautifulSoup(str(rows[0].contents[1])).findAll('a', { 'class' : 'medium-text' })[0].attrs[0][1]
                 year = BeautifulSoup(str(rows[1])).findAll('td')[0].contents[0].strip().split(' ')[1]
                 publication = re.sub("<[^>]+>", '', str(BeautifulSoup(str(rows[1])).findAll('td')[2].contents[1])).strip()
