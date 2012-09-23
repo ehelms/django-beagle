@@ -40,18 +40,37 @@ class GoogleScholar:
             # Screen-scrape the result to obtain the publication information
             soup = BeautifulSoup(html)
         
-            attrs = soup.findAll("h3", { "class" : "gs_rt"})
-            for attr in attrs:
-                temp = BeautifulSoup(str(attr))
-                title = ""
-                
-                href = temp.a.get('href')
+            entries = soup.findAll("div", { "class" : "gs_ri"})
 
-                for item in temp.a.contents:
+            for entry in entries:
+                title       = ""
+                link        = ""
+                citation    = ""
+
+                attrs = BeautifulSoup(str(entry)).findAll("h3", { "class" : "gs_rt"})
+                for attr in attrs:
+                    temp = BeautifulSoup(str(attr))
+                    
+                    link = temp.a.get('href')
+
+                    for item in temp.a.contents:
+                        item = str(item).replace("<b>", "")
+                        item = str(item).replace("</b>", "")
+                        title = title + str(item)
+
+                line = BeautifulSoup(str(entry)).findAll("div", { "class" : "gs_a"})
+                for item in line[0].contents:
                     item = str(item).replace("<b>", "")
                     item = str(item).replace("</b>", "")
-                    title = title + str(item)
-                titles.append({'title' : title, 'href' : href})
+                    citation = citation + str(item)
+    
+                citation = citation.split(' - ')
+                year = re.search('(19|20)\d\d', citation[1]).group()
+                authors = re.sub("<[^>]+>", '', citation[0])
+                authors = authors.lstrip('&hellip;').rstrip('&hellip; ').strip(';').strip(',').strip()
+
+                titles.append({'title' : title, 'link' : link, 
+                                'year' : year, 'authors' : authors})
 
         except urllib2.HTTPError:
             print "ERROR: ",

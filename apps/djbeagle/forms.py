@@ -6,4 +6,4 @@ from djbeagle.models import Search
 class SearchForm(ModelForm):
     class Meta:
         model = Search
-        fields = ('criteria', )
+        fields = ('name', )

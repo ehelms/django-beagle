@@ -3,12 +3,20 @@
   <div class="container">
     <table class="table">
         <thead>
-            <th>Article Title</th>
+            <th>Year</th>
+            <th>Title</th>
+            <th>Authors</th>
+            <th>Search Engine</th>
+            <th>Link</th>
         </thead>
         <tbody>
         {% for article in article_list %}
           <tr>
             <td>{{ article.title }}</td>
+            <td>{{ article.year }}</td>
+            <td>{{ article.authors }}</td>
+            <td>{{ article.engine }}</td>
+            <td><a href="{{ article.link }}">Go To Article</a></td>
           </tr>
         {% endfor %}
         </tbody>

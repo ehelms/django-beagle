@@ -6,8 +6,10 @@
       Please enter search criteria and choose which search engines you would like to use.
       </legend>
       {% csrf_token %}
+      <label>Name</label>
+      <input type="text" name="name"/>
       <label>Enter Search Criteria</label>
-      <input type="text" name="criteria"/>
+      <input type="text" name="criterion"/>
       {% for title in engine_list %}
         <label class="checkbox">
           <input type="checkbox" name="engine" value="{{ title }}" >{{ title }}
@@ -15,5 +17,25 @@
       {% endfor %}
       <input type="submit" id="searchButton" value="Submit" class="btn btn-primary">
     </form>
+    <table class="table">
+        <thead>
+            <th>Name</th>
+            <th>Criteria</th>
+            <th>Engines</th>
+            <th>Articles</th>
+            <th>Date</th>
+        </thead>
+        <tbody>
+        {% for search in search_list %}
+          <tr>
+            <td><a href="{% url search_url search.id %}">{{ search.name }}</a></td>
+            <td>{% for criteria in search.criteria.all %}{{ criteria.search_string }}{% endfor %}</td>
+            <td>{% for engine in search.engines.all %}{{ engine.name }}{% endfor %}</td>
+            <td>{{ search.articles.count }}</td>
+            <td class="span3">{{ search.date }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+    </table>
   </div>
 {% endblock content %}
