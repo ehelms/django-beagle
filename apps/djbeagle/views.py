@@ -6,6 +6,7 @@ from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 from django.contrib.auth.decorators import login_required
+from django.utils import simplejson as json
 
 from djbeagle.forms import SearchForm
 from djbeagle.models import Search, Article
@@ -59,4 +60,12 @@ def search(request, search_id=None):
             return render_to_response("djbeagle/search.html",
                         {'search' : search},
                         context_instance=RequestContext(request))
-            
+    elif request.method == 'DELETE':
+        search = Search.objects.get(pk=search_id)
+        try:
+            search.delete()
+            response = { 'status' : 'success' }
+        except:
+            response = { 'status' : 'error' }
+
+        return HttpResponse(json.dumps(response), mimetype="application/json")

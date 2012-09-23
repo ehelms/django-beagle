@@ -1,4 +1,9 @@
 {% extends "djbeagle/base.html" %}
+
+{% block extrajs %}
+	<script type="text/javascript" src="{{ STATIC_URL }}search.js"></script>
+{% endblock extrajs %}
+
 {% block content %}
   <div class="container">
     <form action="{% url djbeagle.views.search %}" method="POST">
@@ -24,15 +29,17 @@
             <th>Engines</th>
             <th>Articles</th>
             <th>Date</th>
+            <th></th>
         </thead>
         <tbody>
         {% for search in search_list %}
-          <tr>
+          <tr data-id="{{ search.id }}">
             <td><a href="{% url search_url search.id %}">{{ search.name }}</a></td>
             <td>{% for criteria in search.criteria.all %}{{ criteria.search_string }}{% endfor %}</td>
             <td>{% for engine in search.engines.all %}{{ engine.name }}{% endfor %}</td>
             <td>{{ search.articles.count }}</td>
             <td class="span3">{{ search.date }}</td>
+            <td><i class="clickable icon-trash delete-search"></i></td>
           </tr>
         {% endfor %}
         </tbody>
