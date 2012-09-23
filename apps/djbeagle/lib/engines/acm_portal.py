@@ -10,7 +10,7 @@ class ACMPortal:
     title = "ACM Portal"
 
     def __init__(self):
-        self.SEARCH_BASE_URL = "http://portal.acm.org/results.cfm"
+        self.SEARCH_BASE_URL = "http://dl.acm.org/results.cfm"
 
     def search(self, terms, count):
         if count < 10:
@@ -40,10 +40,20 @@ class ACMPortal:
             # Screen-scrape the result to obtain the publication information
             soup = BeautifulSoup(html)
             
-            attrs = soup.findAll("a", { "class" : "medium-text"})
-            for attr in attrs:
-                title = attr.contents[0]
-                titles.append(title)
+            entries = soup.findAll('table', style="padding: 5px; 5px; 5px; 5px;")
+            for entry in entries:
+        
+                rows = BeautifulSoup(str(entry)).findAll("tr")
+
+                title = BeautifulSoup(str(rows[0].contents[1])).findAll('a', { 'class' : 'medium-text' })[0].contents[0]
+                link = 'http://dl.acm.org/' + BeautifulSoup(str(rows[0].contents[1])).findAll('a', { 'class' : 'medium-text' })[0].attrs[0][1]
+                year = BeautifulSoup(str(rows[1])).findAll('td')[0].contents[0].strip().split(' ')[1]
+                publication = re.sub("<[^>]+>", '', str(BeautifulSoup(str(rows[1])).findAll('td')[2].contents[1])).strip()
+                authors = re.sub("<[^>]+>", '', str(BeautifulSoup(str(rows[0].contents[1])).findAll('div', { 'class' : 'authors' })[0])).strip()
+
+                titles.append({'title' : title, 'link' : link, 
+                                'year' : year, 'authors' : authors})
+
         except urllib2.HTTPError:
             print "ERROR: ",
             print resp.status, resp.reason

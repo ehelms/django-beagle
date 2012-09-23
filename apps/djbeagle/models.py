@@ -11,7 +11,7 @@ class Search(models.Model):
     engines     = models.ManyToManyField("Engine", blank=True)
 
 class Criterion(models.Model):
-    search_string = models.CharField(max_length=128)
+    search_string = models.CharField(max_length=128, unique=True)
 
     class Meta:
         verbose_name_plural = "criteria"
@@ -22,7 +22,7 @@ class Article(models.Model):
     year        = models.TextField(blank=True)
     authors     = models.TextField(blank=True)
     publication = models.CharField(max_length=128, blank=True)
-    engine      = models.CharField(max_length=128)
+    engine      = models.ForeignKey("Engine")
 
 class Engine(models.Model):
-    name        = models.CharField(max_length=128)
+    name        = models.CharField(max_length=128, unique=True)

@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils import simplejson as json
 
 from djbeagle.forms import SearchForm
-from djbeagle.models import Search, Article
+from djbeagle.models import Search, Article, Engine, Criterion
 from djbeagle.lib.engines import util
 from djbeagle.lib.search import run
 #from djbeagle.lib import document
@@ -31,16 +31,20 @@ def search(request, search_id=None):
         search_form = SearchForm(request.POST, instance=search)
         if search_form.is_valid():
             saved_search = search_form.save()
-            results = run(request.POST.getlist('engine'), request.POST['criterion'])
 
             for criterion in request.POST.getlist('criterion'):
-                saved_search.criteria.get_or_create(search_string=criterion)
+                saved_search.criteria.add(Criterion.objects.get_or_create(search_string=criterion)[0])
             for engine in request.POST.getlist('engine'):
-                saved_search.engines.get_or_create(name=engine)
-            for result in results:
-                saved_search.articles.get_or_create(title=result['title'], year=result['year'], 
-                                                    link=result['link'], authors=result['authors'],
-                                                    engine=request.POST['engine'])
+                engine_obj = Engine.objects.get_or_create(name=engine)[0]
+                saved_search.engines.add(engine_obj)
+                results = run(engine, request.POST['criterion'])
+
+                for result in results:
+                    article = Article.objects.get_or_create(title=result['title'], year=result['year'], 
+                                                        link=result['link'], authors=result['authors'],
+                                                        engine=engine_obj)[0]
+                    saved_search.articles.add(article)
+
             return redirect('search_url', search_id=saved_search.id)
         else:
             return HttpResponse("fail")
